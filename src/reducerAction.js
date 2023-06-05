@@ -3,7 +3,7 @@ let undoArray = [];
 let redoArray = [];
 export default function handleReducer(state, action) {
   switch (action.type) {
-    case ACTIONS.COLORSELECTION:
+    case ACTIONS.COLOR_SELECTION:
       return {
         selectedColor: action.changedColor,
         squareColors: state.squareColors,

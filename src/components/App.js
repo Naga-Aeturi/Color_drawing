@@ -1,9 +1,9 @@
 import "./../styles.css";
 import React, { useReducer, useCallback } from "react";
 import { CirclePicker } from "react-color";
-import handleReducer from "../handleReducer.js";
+import handleReducer from "../reducerAction.js";
 import Container from "./Container.js";
-import {COLORSELECTION,CLICK,RESET,REDO,UNDO} from "../Constants.js";
+import {ACTIONS} from "../Constants.js";
 export default function App() {
   const [state, dispatch] = useReducer(handleReducer, {
     selectedColor: "white",
@@ -14,28 +14,28 @@ export default function App() {
 
   const handleColorSelection = useCallback(
     (colorName) => {
-      dispatch({ type: COLORSELECTION, changedColor: colorName.hex });
+      dispatch({ type: ACTIONS.COLOR_SELECTION, changedColor: colorName.hex });
     },
     [dispatch]
   );
 
   const handleClick = useCallback(
     (index) => {
-      dispatch({ type: CLICK, index });
+      dispatch({ type: ACTIONS.CLICK, index });
     },
     [dispatch]
   );
 
   const handleReset = useCallback(() => {
-    dispatch({ type: RESET });
+    dispatch({ type: ACTIONS.RESET });
   }, [dispatch]);
 
   const handleUndo = useCallback(() => {
-    dispatch({ type: UNDO });
+    dispatch({ type: ACTIONS.UNDO });
   }, [dispatch]);
 
   const handleRedo = useCallback(() => {
-    dispatch({ type: REDO });
+    dispatch({ type: ACTIONS.REDO });
   }, [dispatch]);
 
   return (
