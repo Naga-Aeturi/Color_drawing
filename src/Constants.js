@@ -3,5 +3,6 @@ export const ACTIONS = {
     CLICK: "handleClick",
     RESET: "handleReset",
     REDO: "handleRedo",
-    UNDO: "handleUndo"
+    UNDO: "handleUndo",
+    SAVEDCOLORS:"SavedColors"
 };

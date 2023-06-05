@@ -1,14 +1,18 @@
 import "./../styles.css";
+
 import React, { useReducer, useCallback } from "react";
 import { CirclePicker } from "react-color";
-import handleReducer from "../reducerAction.js";
-import Container from "./Container.js";
-import {ACTIONS} from "../Constants.js";
+
+import {Grid} from "./Grid.js";
+
+import {reducer} from "../reducer.js";
+import {ACTIONS} from "../constants.js";
+
 export default function App() {
-  const [state, dispatch] = useReducer(handleReducer, {
+  const [state, dispatch] = useReducer(reducer, {
     selectedColor: "white",
-    squareColors:
-      JSON.parse(localStorage.getItem("SavedColors")) ??
+    cellColors:
+      JSON.parse(localStorage.getItem(ACTIONS.SAVEDCOLORS)) ??
       Array(256).fill("#FFFFFF"),
   });
 
@@ -39,23 +43,21 @@ export default function App() {
   }, [dispatch]);
 
   return (
-    <div className="container">
+    <div className="bodyContainer">
       <div>
-        <h1 className="titleStyle">Color-Padding</h1>
+        <h1 className="title">Color-Padding</h1>
       </div>
-      <div className="div2">
-        <CirclePicker className="gridStyle" onChange={handleColorSelection} />
+      <div className="colorSelector">
+        <CirclePicker className="grid" onChange={handleColorSelection} />
       </div>
-      <div className="gridWrapperStyle">
-        <div className="containerStyle">
-          <Container
-            squareColors={state.squareColors}
-            onSquareClick={handleClick}
+      <div className="gridWrapper">
+          <Grid
+            cellColors={state.cellColors}
+            onCellClick={handleClick}
             selectedColor={state.selectedColor}
-          />
-        </div>
+            />
       </div>
-      <div className="buttonStyle">
+      <div className="button">
         <button onClick={handleReset}>Reset</button>
         <button onClick={handleUndo}>Undo</button>
         <button onClick={handleRedo}>Redo</button>
