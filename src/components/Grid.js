@@ -1,12 +1,15 @@
 import { memo, useCallback, useState, useEffect } from "react";
 
-export const Grid =({
+export const Grid = ({
   cellColors,
   onCellClick: _onCellClick,
   selectedColor,
-}) =>{
+}) => {
   let result = cellColors.map((color, index) => {
-    const onCellClick = useCallback(() => _onCellClick(index),[index, _onCellClick])
+    const onCellClick = useCallback(
+      () => _onCellClick(index),
+      [index, _onCellClick]
+    );
     return (
       <Cell
         key={index}
@@ -18,13 +21,14 @@ export const Grid =({
     );
   });
   return result;
-}
+};
 
-export const Cell = memo(({color, onCellClick, selectedColor }) => {
+export const Cell = memo(({ color, onCellClick, selectedColor }) => {
   const [bgColor, setbgColor] = useState(color);
   useEffect(() => {
     setbgColor(color);
   }, [color]);
+  
   return (
     <div
       className="cell"

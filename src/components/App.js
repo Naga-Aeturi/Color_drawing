@@ -1,20 +1,22 @@
 import React, { useReducer, useCallback } from "react";
 import { CirclePicker } from "react-color";
 
-import {Grid} from "./Grid.js";
+import { Grid } from "./Grid.js";
 
-import {reducer} from "../reducer.js";
-import {ACTIONS} from "../constants.js";
+import { reducer } from "../reducer.js";
+import { ACTIONS,LOCAL_STORAGE_KEY,DEFAULT_COLOR_ARRAY } from "../constants.js";
 
 import "./../styles.css";
 
-export default function App() {
-  let loadedCellColors= JSON.parse(localStorage.getItem(ACTIONS.SAVEDCOLORS)) ??Array(256).fill("#FFFFFF");
+export const App = () => {
+  let loadedCellColors =
+    JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) ??
+    DEFAULT_COLOR_ARRAY;
   const [state, dispatch] = useReducer(reducer, {
-    undoRedoArray:[loadedCellColors],
-    currentIndexInArray:0,
+    undoRedoArray: [loadedCellColors],
+    currentIndex: 0,
     selectedColor: "white",
-    cellColors:loadedCellColors,
+    cellColors: loadedCellColors,
   });
 
   const handleColorSelection = useCallback(
@@ -52,11 +54,11 @@ export default function App() {
         <CirclePicker onChange={handleColorSelection} />
       </div>
       <div className="gridWrapper">
-          <Grid
-            cellColors={state.cellColors}
-            onCellClick={handleClick}
-            selectedColor={state.selectedColor}
-            />
+        <Grid
+          cellColors={state.cellColors}
+          onCellClick={handleClick}
+          selectedColor={state.selectedColor}
+        />
       </div>
       <div className="button">
         <button onClick={handleReset}>Reset</button>
@@ -65,4 +67,4 @@ export default function App() {
       </div>
     </div>
   );
-}
+};

@@ -18,7 +18,7 @@
   flex-wrap: wrap;
   justify-content: center;
 }
-.title{
+.title {
   text-align: center;
 }
 .button {
@@ -26,7 +26,7 @@
   margin: 10px;
 }
 .cell {
-    width: 1em;
-    height: 1em;
-    border: 1px solid #000;
-  };
+  width: 1em;
+  height: 1em;
+  border: 1px solid #000;
+};
