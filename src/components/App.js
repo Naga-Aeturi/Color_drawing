@@ -1,5 +1,3 @@
-import "./../styles.css";
-
 import React, { useReducer, useCallback } from "react";
 import { CirclePicker } from "react-color";
 
@@ -8,12 +6,15 @@ import {Grid} from "./Grid.js";
 import {reducer} from "../reducer.js";
 import {ACTIONS} from "../constants.js";
 
+import "./../styles.css";
+
 export default function App() {
+  let loadedCellColors= JSON.parse(localStorage.getItem(ACTIONS.SAVEDCOLORS)) ??Array(256).fill("#FFFFFF");
   const [state, dispatch] = useReducer(reducer, {
+    undoRedoArray:[loadedCellColors],
+    currentIndexInArray:0,
     selectedColor: "white",
-    cellColors:
-      JSON.parse(localStorage.getItem(ACTIONS.SAVEDCOLORS)) ??
-      Array(256).fill("#FFFFFF"),
+    cellColors:loadedCellColors,
   });
 
   const handleColorSelection = useCallback(
@@ -48,7 +49,7 @@ export default function App() {
         <h1 className="title">Color-Padding</h1>
       </div>
       <div className="colorSelector">
-        <CirclePicker className="grid" onChange={handleColorSelection} />
+        <CirclePicker onChange={handleColorSelection} />
       </div>
       <div className="gridWrapper">
           <Grid

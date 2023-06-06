@@ -4,5 +4,5 @@ export const ACTIONS = {
     RESET: "handleReset",
     REDO: "handleRedo",
     UNDO: "handleUndo",
-    SAVEDCOLORS:"SavedColors"
+    SAVEDCOLORS:"SavedColors",
 };

@@ -1,7 +1,5 @@
 import { ACTIONS } from "./constants.js";
 
-let undoArray = [];
-let redoArray = [];
 export const reducer=(state, action) =>{
   switch (action.type) {
     case ACTIONS.COLOR_SELECTION:
@@ -10,45 +8,37 @@ export const reducer=(state, action) =>{
       };
 
     case ACTIONS.CLICK: {
-      if (redoArray.length !== 0) {
-        redoArray = [];
-      }
       let newCellColors = [...state.cellColors];
-      undoArray.push(state.cellColors);
+      let newUndoRedoArray=state.undoRedoArray.slice(0,state.currentIndexInArray+1);
       newCellColors[action.index] = state.selectedColor;
+      newUndoRedoArray.push(newCellColors);
       localStorage.setItem(ACTIONS.SAVEDCOLORS, JSON.stringify(newCellColors));
-      return { ...state, cellColors: newCellColors };
+      return { ...state, cellColors: newCellColors,undoRedoArray:newUndoRedoArray,currentIndexInArray:state.currentIndexInArray+1 };
     }
 
     case ACTIONS.RESET: {
-      undoArray = [];
-      redoArray = [];
       localStorage.setItem(
         ACTIONS.SAVEDCOLORS,
         JSON.stringify(Array(256).fill("#FFFFFF"))
       );
       return {
         ...state,
-        cellColors: Array(256).fill("#FFFFFF"),
+        cellColors: Array(256).fill("#FFFFFF"),undoRedoArray:[Array(256).fill("#FFFFFF")],currentIndexInArray:0
       };
     }
 
     case ACTIONS.UNDO: {
-      if (undoArray.length > 0) {
-        redoArray.push(state.cellColors);
-        let past = undoArray.pop();
-        localStorage.setItem(ACTIONS.SAVEDCOLORS, JSON.stringify(past));
-        return { ...state, cellColors: past };
+      if (state.currentIndexInArray > 0) {
+        localStorage.setItem(ACTIONS.SAVEDCOLORS, JSON.stringify(state.undoRedoArray[state.currentIndexInArray-1]));
+        return { ...state, cellColors: state.undoRedoArray[state.currentIndexInArray-1],currentIndexInArray:state.currentIndexInArray-1 };
       }
       return state;
     }
 
     case ACTIONS.REDO: {
-      if (redoArray.length > 0) {
-        undoArray.push(state.cellColors);
-        let next = redoArray.pop();
-        localStorage.setItem(ACTIONS.SAVEDCOLORS, JSON.stringify(next));
-        return { ...state, cellColors: next };
+      if (state.currentIndexInArray<state.undoRedoArray.length-1) {
+        localStorage.setItem(ACTIONS.SAVEDCOLORS, JSON.stringify(state.undoRedoArray[state.currentIndexInArray+1]));
+        return { ...state, cellColors: state.undoRedoArray[state.currentIndexInArray+1] ,currentIndexInArray:state.currentIndexInArray+1 };
       }
       return state;
     }
