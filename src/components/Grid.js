@@ -28,18 +28,16 @@ export const Cell = memo(({ color, onCellClick, selectedColor }) => {
   useEffect(() => {
     setbgColor(color);
   }, [color]);
-  
+
+  const onMouseEnter=useCallback(()=>setbgColor(selectedColor));
+  const onMouseLeave=useCallback(()=>setbgColor(color));
   return (
     <div
       className="cell"
       style={{ backgroundColor: bgColor }}
       onClick={onCellClick}
-      onMouseEnter={() => {
-        setbgColor(selectedColor);
-      }}
-      onMouseLeave={() => {
-        setbgColor(color);
-      }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     />
   );
 });
