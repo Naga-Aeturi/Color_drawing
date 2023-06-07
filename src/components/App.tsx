@@ -6,6 +6,7 @@ import { Grid } from "./Grid";
 import { reducer } from "../reducer";
 import { ACTIONS, LOCAL_STORAGE_KEY, DEFAULT_COLOR_ARRAY } from "../constants";
 import { State } from "../types";
+
 import "./../styles.css";
 
 export const App = () => {
