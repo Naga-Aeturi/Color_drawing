@@ -1,33 +1,42 @@
 import React, { useReducer, useCallback } from "react";
 import { CirclePicker } from "react-color";
 
-import { Grid } from "./Grid.js";
+import { Grid } from "./Grid";
 
-import { reducer } from "../reducer.js";
-import { ACTIONS,LOCAL_STORAGE_KEY,DEFAULT_COLOR_ARRAY } from "../constants.js";
-
+import { reducer } from "../reducer";
+import { ACTIONS, LOCAL_STORAGE_KEY, DEFAULT_COLOR_ARRAY } from "../constants";
+import { State } from "../types";
 import "./../styles.css";
 
 export const App = () => {
-  let loadedCellColors =
-    JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) ??
-    DEFAULT_COLOR_ARRAY;
-  const [state, dispatch] = useReducer(reducer, {
+  let loadedCellColors: Array<string>;
+  if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
+    loadedCellColors = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_KEY) ?? "[]"
+    );
+  } else {
+    loadedCellColors = DEFAULT_COLOR_ARRAY;
+  }
+  const initialState: State = {
     undoRedoArray: [loadedCellColors],
     currentIndex: 0,
     selectedColor: "white",
     cellColors: loadedCellColors,
-  });
+  };
+  interface selectColortype {
+    hex: string;
+  }
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleColorSelection = useCallback(
-    (colorName) => {
-      dispatch({ type: ACTIONS.COLOR_SELECTION, changedColor: colorName.hex });
+    (color: selectColortype) => {
+      dispatch({ type: ACTIONS.COLOR_SELECTION, changedColor: color.hex });
     },
     [dispatch]
   );
 
   const handleClick = useCallback(
-    (index) => {
+    (index: number) => {
       dispatch({ type: ACTIONS.CLICK, index });
     },
     [dispatch]
@@ -53,7 +62,7 @@ export const App = () => {
       <div className="colorSelector">
         <CirclePicker onChange={handleColorSelection} />
       </div>
-      <div className="gridWrapper">
+      <div className="boarder">
         <Grid
           cellColors={state.cellColors}
           onCellClick={handleClick}

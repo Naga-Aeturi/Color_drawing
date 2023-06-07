@@ -1,11 +1,12 @@
-import { ACTIONS,LOCAL_STORAGE_KEY,DEFAULT_COLOR_ARRAY } from "./constants.js";
+import { ACTIONS,LOCAL_STORAGE_KEY,DEFAULT_COLOR_ARRAY } from "./constants";
+import {State,Action} from "./types"
 
-export const reducer = (state, action) => {
+export const reducer = (state:State, action:Action):State => {
   switch (action.type) {
     case ACTIONS.COLOR_SELECTION:
       return {
         ...state,
-        selectedColor: action.changedColor,
+        selectedColor: (action.changedColor==undefined)?"#FFFFFF":action.changedColor,
       };
 
     case ACTIONS.CLICK: {
@@ -14,7 +15,8 @@ export const reducer = (state, action) => {
         0,
         state.currentIndex + 1
       );
-      newCellColors[action.index] = state.selectedColor;
+      let index=(action.index==undefined)?0:action.index;
+      newCellColors[index] = state.selectedColor;
       newUndoRedoArray.push(newCellColors);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newCellColors));
       return {

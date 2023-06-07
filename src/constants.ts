@@ -8,4 +8,4 @@ export const ACTIONS = {
 
 
 export const LOCAL_STORAGE_KEY = "SavedColors"
-export const DEFAULT_COLOR_ARRAY=Array(256).fill("#FFFFFF")
+export const DEFAULT_COLOR_ARRAY:Array<string>=Array(256).fill("#FFFFFF")
